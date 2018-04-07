@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    // Targeted standard
+    "target": "es6",
+    "lib": [
+      "dom",
+      "es2017",
+      "esnext.asynciterable"
+    ],
+    // Module system
+    "module": "es6",
+    "moduleResolution": "node",
+    // Strictness
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitThis": true,
+    "skipLibCheck": true,
+    // Output
+    "sourceMap": false,
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "declaration": false,
+    "outDir": "dist",
+    "rootDir": "src"
+  },
+  "include": [
+    "src/**/*.ts"
+  ]
+}
