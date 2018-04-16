@@ -6,8 +6,8 @@
   "license": "MIT",
   "description": "Testing ground for me to experiment with [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components). For the time being, while aware of Web Component frameworks out there, the intent is for this to be vanilla-only.",
   "scripts": {
-    "format:write": "node_modules/.bin/prettier --write src/**/*.ts",
-    "format:check": "node_modules/.bin/prettier --list-different src/**/*.ts"
+    "format:write": "node_modules/.bin/prettier --write src/**/*.ts tools/**/*.ts webpack.config.js",
+    "format:check": "node_modules/.bin/prettier --list-different src/**/*.ts tools/**/*.ts webpack.config.js"
   },
   "dependencies": {
     "@webcomponents/webcomponentsjs": "1.1.1"
