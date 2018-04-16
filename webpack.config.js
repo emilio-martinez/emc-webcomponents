@@ -1,39 +1,17 @@
 const path = require('path');
-const util = require('util');
 const fs = require('mz/fs');
-const globby = require('globby');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const LicenseWebpackPlugin = require('license-webpack-plugin').LicenseWebpackPlugin;
+const WatchExternalFilesPlugin = require('./tools/watch-external-files-plugin');
+const deleteDirRecursively = require('./tools/delete-dir-recursively');
+const nicerLog = require('./tools/nicer-log');
 
 const elementsPath = 'src/elements';
 
-function nicerLog(title, ...logItems) {
-  const inspectOpts = { colors: true, compact: true };
-  console.log(logItems);
-  const toPrint = logItems.reduce((acc, arg) => acc.concat(util.inspect(arg, inspectOpts), '\r\n'), []);
-  console.log(toPrint);
-  console.log(`${title}:\r\n`, ...toPrint);
-}
-
 function htmlWebpackPluginChunksSortMode(a, b) {
   return a.names[0] === 'vendor' ? -1 : b.names[0] === 'vendor' ? 1 : 0;
-}
-
-function deleteDirRecursively(path) {
-  if (fs.existsSync(path)) {
-    fs.readdirSync(path).forEach(function(file, index) {
-      const curPath = `${path}/${file}`;
-      if (fs.lstatSync(curPath).isDirectory()) {
-        deleteDirRecursively(curPath);
-      } else {
-        // delete file
-        fs.unlinkSync(curPath);
-      }
-    });
-    fs.rmdirSync(path);
-  }
 }
 
 async function getElements() {
@@ -77,33 +55,6 @@ async function getElements() {
   nicerLog('Following elements found', elementData);
 
   return { elementData, elementEntries, elementHTMLPlugins };
-}
-
-class WatchExternalFilesPlugin {
-  constructor({ files = [], verbose = false } = {}) {
-    this.files = files;
-    this.verbose = !!verbose;
-    this._firstRun = false;
-  }
-
-  apply(compiler) {
-    compiler.hooks.afterCompile.tapAsync('watch-external-files-plugin', async (compilation, callback) => {
-      const filePaths = await globby(this.files, { absolute: true });
-
-      if (this.verbose && !this._firstRun) {
-        nicerLog('Watching external files', filePaths);
-      }
-
-      filePaths.forEach(file => {
-        Array.isArray(compilation.fileDependencies)
-          ? compilation.fileDependencies.push(file)
-          : compilation.fileDependencies.add(file);
-      });
-
-      this._firstRun = true;
-      callback();
-    });
-  }
 }
 
 module.exports = async (_, argv) => {
