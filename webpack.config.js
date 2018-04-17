@@ -46,9 +46,12 @@ async function getElements() {
         title: `${el.name} element`,
         chunksSortMode: htmlWebpackPluginChunksSortMode,
         template: 'src/templates/element.tpl.html',
-        element: {
-          body: fs.readFileSync(el.demo, { encoding: 'utf-8' })
-        }
+        templateParameters: (compilation, assets, options) => ({
+          element: {
+            title: options.title,
+            body: fs.readFileSync(el.demo, { encoding: 'utf-8' })
+          }
+        })
       })
   );
 
