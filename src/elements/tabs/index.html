@@ -1,0 +1,36 @@
+<style>
+  emc-tab, emc-panel {
+    border: 1px solid #ccc;
+    padding: 20px;
+  }
+
+  emc-tab {
+    flex-grow: 1;
+    flex-shrink: 1;
+  }
+
+  emc-tab[selected] {
+    background-color: #dbf7db;
+    color: #087f5b;
+    border-color: #087f5b;
+  }
+
+  /**
+   * If JavaScript does not run, the element will not match `:defined`.
+   * In that case this style adds spacing between tabs and previous panel.
+   */
+  emc-tabs:not(:defined),
+  emc-tab:not(:defined),
+  emc-panel:not(:defined) {
+    display: block;
+  }
+</style>
+
+<emc-tabs>
+  <emc-tab role="heading" slot="tab">Tab 1</emc-tab>
+  <emc-panel role="region" slot="panel">Content 1</emc-panel>
+  <emc-tab role="heading" slot="tab">Tab 2</emc-tab>
+  <emc-panel role="region" slot="panel">Content 2</emc-panel>
+  <emc-tab role="heading" slot="tab">Tab 3</emc-tab>
+  <emc-panel role="region" slot="panel">Content 3</emc-panel>
+</emc-tabs>
