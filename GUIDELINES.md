@@ -24,3 +24,44 @@ _upgradeProperty(prop) {
   }
 }
 ```
+
+### Use `attributeChangedCallback()` for side effects
+
+Setting properties or otherwise reflecting state within `attributeChangedCallback()` can go very wrong very fast without care.
+
+```ts
+// Handles `selected` attribute change and therefore sets property
+attributeChangedCallback(name, oldValue, newValue) {
+  if (name === 'selected') this.selected = newValue;
+}
+
+// ⚠️Infinite loop ⚠️ ahead.
+// Attribute is set and triggers `attributeChangedCallback()` again
+set selected(value) {
+  const selected = Boolean(value);
+  if (selected) this.setAttribute('selected', '');
+  else this.removeAttribute('selected');
+}
+```
+
+An easy solve is to check whether the value has changed within the setter, therefore neutralizing the loop as it comes back. However, perhaps a more elegant way is to avoid it altogether by reserving `attributeChangedCallback()` to handle side effects. In this manner, setters won't need extra logic to manage property state without concern for creating a loop, and side effects for all properties will isolated and handled within `attributeChangedCallback()`.
+
+```ts
+attributeChangedCallback() {
+  const value = this.hasAttribute('selected');
+  this.setAttribute('aria-selected', `${value}`);
+  this.setAttribute('tabIndex', `${value ? 0 : -1}`);
+}
+
+// OR
+
+attributeChangedCallback(name, oldValue, newValue) {
+  const value = newValue !== null;
+  switch (name) {
+    case 'selected':
+      this.setAttribute('aria-selected', `${value}`);
+      this.setAttribute('tabIndex', `${value ? 0 : -1}`);
+      break;
+  }
+}
+```
