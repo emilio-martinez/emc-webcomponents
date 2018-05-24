@@ -1,6 +1,8 @@
-# Web Component Guidelines
+# Web Components: What to keep in mind
 
-This is a series of web component guidelines I've collected through various sources and through experimentation. It's not meant to be exhaustive but rather it's a compiled set of practices I've found to be particularly useful to keep in mind.
+This document is simply an aggregated set of web component guidelines and best practices that I've collected by reading docs, articles, browsing source code, and so on. It's not meant to be exhaustive but just a handy summary of practices I've found to be particularly useful when building vanilla web components.
+
+If using a framework like Polymer these might be interesting but not super helpful because a lot of these will likely be handled for you.
 
 ## Properties and attributes
 
